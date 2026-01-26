@@ -2,9 +2,6 @@
 
 A full-stack civic engagement platform that empowers citizens to report urban issues (waste, hazards, maintenance) and enables municipal authorities to track, manage, and resolve them efficiently using geolocation and visual data.
 
-![Project Banner](https://via.placeholder.com/1000x400?text=CivicConnect+Dashboard+Screenshot) 
-*(Tip: Replace this link with a screenshot of your actual dashboard)*
-
 ## 🚀 Key Features
 
 ### 👤 Citizen Portal
