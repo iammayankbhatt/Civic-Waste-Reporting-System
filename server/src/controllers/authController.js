@@ -23,6 +23,7 @@ exports.register = async (req, res) => {
     const user = newUser.rows[0];
     res.status(201).json({ ...user, token: generateToken(user.id, user.role) });
   } catch (err) {
+    console.error("REGISTRATION ERROR DETAILS:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -45,6 +46,8 @@ exports.login = async (req, res) => {
       token: generateToken(user.id, user.role)
     });
   } catch (err) {
+    console.error("Login ERROR DETAILS:", err);
     res.status(500).json({ error: err.message });
+    
   }
 };
