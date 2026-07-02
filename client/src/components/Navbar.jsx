@@ -17,6 +17,11 @@ export default function Navbar() {
             <>
               <span className="text-gray-300 hidden md:inline">Hello, {user.full_name}</span>
               <Link to="/report" className="hover:text-green-400">Report Issue</Link>
+
+
+              {/* Added History Link for Citizen Navigation */}
+              <Link to="/my-history" className="hover:text-green-400">My History</Link>
+              
               {/* Only show Admin link if user is actually an admin */}
               {user.role === 'admin' && (
                 <Link to="/admin" className="text-yellow-400 font-bold hover:text-yellow-300">

@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ReportWaste from './pages/ReportWaste';
 import AdminDashboard from './pages/AdminDashboard';
+import MyReports from './pages/MyReports';
 import { useAuth } from './context/AuthContext';
 
 function ProtectedRoute({ children, role }) {
@@ -31,6 +32,15 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ReportWaste />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/my-history" 
+            element={
+              <ProtectedRoute>
+                <MyReports />
               </ProtectedRoute>
             } 
           />
