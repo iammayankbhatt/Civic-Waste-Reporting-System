@@ -80,24 +80,25 @@ export default function ReportWaste() {
 
   return (
     <div className="flex justify-center w-full mt-10 mb-10">
-      <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg border border-gray-200">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Report an Issue</h2>
+      {/* Container swapped to slate-900 background with white/slate text for stark contrast */}
+      <div className="w-full max-w-lg bg-slate-900 p-8 rounded-lg shadow-2xl border border-slate-700">
+        <h2 className="text-2xl font-bold mb-6 text-center text-white">Report an Issue</h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-slate-300">Description</label>
             <textarea 
               {...register('description', { required: "Description is required" })} 
-              className="w-full p-2 border rounded mt-1 focus:ring-2 focus:ring-green-500 text-gray-800"
+              className="w-full p-2 border border-slate-700 bg-slate-800 rounded mt-1 focus:ring-2 focus:ring-green-500 text-white placeholder-slate-500"
               placeholder="E.g., Large pile of garbage near the park..."
             />
-            {errors.description && <p className="text-red-500 text-xs">{errors.description.message}</p>}
+            {errors.description && <p className="text-red-400 text-xs mt-1">{errors.description.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Category</label>
-            <select {...register('category')} className="w-full p-2 border rounded mt-1 text-gray-800">
+            <label className="block text-sm font-medium text-slate-300">Category</label>
+            <select {...register('category')} className="w-full p-2 border border-slate-700 bg-slate-800 rounded mt-1 text-white">
               <option value="Garbage">Garbage Dump</option>
               <option value="Litter">Littering</option>
               <option value="Construction">Construction Waste</option>
@@ -105,9 +106,9 @@ export default function ReportWaste() {
             </select>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded border border-dashed border-gray-300 text-center">
-            <p className="text-sm text-gray-600 mb-2">Location Status: <span className="font-bold">{locStatus}</span></p>
-            <button type="button" onClick={getLocation} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-semibold transition">
+          <div className="bg-slate-800 p-4 rounded border border-dashed border-slate-600 text-center">
+            <p className="text-sm text-slate-300 mb-2">Location Status: <span className="font-bold text-green-400">{locStatus}</span></p>
+            <button type="button" onClick={getLocation} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-semibold transition shadow">
               📍 Get Current Location
             </button>
             <input type="hidden" {...register('latitude')} />
@@ -115,14 +116,14 @@ export default function ReportWaste() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Photo</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Upload Photo</label>
             
             {!imagePreview ? (
               <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-800 hover:bg-slate-700 transition">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p className="text-xs text-gray-400">PNG, JPG or JPEG</p>
+                    <p className="mb-2 text-sm text-slate-300"><span className="font-semibold text-green-400">Click to upload</span> or drag and drop</p>
+                    <p className="text-xs text-slate-400">PNG, JPG or JPEG</p>
                   </div>
                   <input 
                     type="file" 
@@ -133,16 +134,17 @@ export default function ReportWaste() {
                 </label>
               </div>
             ) : (
-              <div className="border rounded-lg p-3 bg-gray-50 space-y-3">
-                <div className="flex items-center justify-between border-b pb-2">
-                  <div className="truncate max-w-[70%]">
-                    <p className="text-xs text-gray-400">Selected File Name:</p>
-                    <p className="text-sm font-medium text-gray-700 truncate">{selectedImage[0]?.name}</p>
+              /* Completely dark sub-container to isolate file text and buttons clearly */
+              <div className="border border-slate-700 rounded-lg p-3 bg-slate-800 space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-700 pb-2">
+                  <div className="truncate max-w-[65%]">
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Selected File:</p>
+                    <p className="text-sm font-medium text-white truncate">{selectedImage[0]?.name}</p>
                   </div>
                   <button 
                     type="button" 
                     onClick={handleRemoveImage}
-                    className="text-xs bg-red-50 px-2 py-1 rounded text-red-600 border border-red-200 hover:bg-red-100 transition font-semibold"
+                    className="text-xs bg-red-900/40 px-2 py-1 rounded text-red-400 border border-red-800/60 hover:bg-red-900/60 transition font-bold"
                   >
                     ✕ Remove / Edit
                   </button>
@@ -151,12 +153,12 @@ export default function ReportWaste() {
                   <img 
                     src={imagePreview} 
                     alt="Preview" 
-                    className="h-40 w-full object-cover rounded-md shadow-sm border"
+                    className="h-40 w-full object-cover rounded-md shadow border border-slate-700"
                   />
                 </div>
               </div>
             )}
-            {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image.message}</p>}
+            {errors.image && <p className="text-red-400 text-xs mt-1">{errors.image.message}</p>}
           </div>
 
           <button 

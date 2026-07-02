@@ -39,9 +39,65 @@ export default function AdminDashboard() {
     }
   };
 
+const exportToExcel = async () => {
+  if (reports.length === 0) return alert("No reports available to export");
+  
+  alert("Fetching city details and generating report. Please wait a moment...");
+
+  const csvRows = [
+    ["Report ID", "Category", "Description", "Status", "Latitude", "Longitude", "City/Location", "Created At"]
+  ];
+
+  for (const report of reports) {
+    let cityName = "Unknown/Not Resolved";
+    
+    // Reverse Geocode using free OpenStreetMap API to pull out the exact City name
+    if (report.latitude && report.longitude) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${report.latitude}&lon=${report.longitude}`
+        );
+        const geoData = await response.json();
+        cityName = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.suburb || "Unknown";
+      } catch (err) {
+        cityName = "Fetch Failed";
+      }
+    }
+
+    // Format fields securely to prevent text from breaking CSV boundaries
+    csvRows.push([
+      report.id,
+      `"${report.category}"`,
+      `"${report.description.replace(/"/g, '""')}"`,
+      report.status,
+      report.latitude,
+      report.longitude,
+      `"${cityName}"`,
+      new Date(report.created_at).toLocaleString()
+    ]);
+  }
+
+  // Compile, generate blob string and trigger standard browser auto-download
+  const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(e => e.join(",")).join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `CivicConnect_Report_Export_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">🏛️ Municipal Admin Dashboard</h1>
+      <button 
+        onClick={exportToExcel}
+        className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-700 transition flex items-center gap-2 shadow text-sm"
+      >
+        📥 Export Data to Excel (CSV)
+      </button>
       
       {/* 1. Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
