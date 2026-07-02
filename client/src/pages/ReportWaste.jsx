@@ -4,7 +4,7 @@ import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function ReportWaste() {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm(); // Added errors
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm(); // Added errors
   const [loading, setLoading] = useState(false);
   const [locStatus, setLocStatus] = useState('Not fetched'); // Visual feedback
   const navigate = useNavigate();
@@ -47,7 +47,8 @@ export default function ReportWaste() {
       });
       alert('Report Submitted Successfully!');
       // Reset form or redirect
-      window.location.reload(); 
+      reset();
+      setLocStatus('Not fetched');
     } catch (err) {
       console.error(err);
       alert('Failed to submit report. Check console for details.');
