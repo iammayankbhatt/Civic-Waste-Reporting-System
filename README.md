@@ -2,6 +2,11 @@
 
 A full-stack civic engagement platform that empowers citizens to report urban issues (waste, hazards, maintenance) and enables municipal authorities to track, manage, and resolve them efficiently using geolocation and visual data.
 
+## 🚀 Try It Out
+You can interact with the live deployed application here:
+* **Live Demo:** [https://civic-waste-reporting-system.vercel.app](https://civic-waste-reporting-system.vercel.app)
+
+
 ## 🚀 Key Features
 
 ### 👤 Citizen Portal
