@@ -5,7 +5,12 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser'); // Imported
 const authRoutes = require('./routes/authRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 const errorHandler = require('./middleware/errorMiddleware'); // Imported
+
+
+
+
 require('dotenv').config();
 
 const app = express();
@@ -20,7 +25,8 @@ app.use(morgan('dev'));
 // Core Route Redirections
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
-
+app.use('/api/reports', reportRoutes);
+app.use('/api/ai', aiRoutes); // <-- Mount AI endpoint here
 // Global Error Handler - MUST BE THE VERY LAST LINE OF MIDDLEWARE
 app.use(errorHandler);
 
