@@ -3,28 +3,36 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 
-const HeatmapLayer = ({ points }) => {
+export default function HeatmapLayer({ points }) {
   const map = useMap();
 
   useEffect(() => {
-    if (!points.length) return;
+    if (!map || !points) return;
 
-    // Format: [lat, lng, intensity]
-    // Intensity is hardcoded to 0.5 for now, but could be dynamic based on report severity
-    const heatPoints = points.map(p => [p.latitude, p.longitude, 0.5]);
+    // IRONCLAD FILTERING: Remove any rows that have undefined, null, or unparseable coordinate types
+    const validPoints = points.filter(p => {
+      if (!p || !Array.isArray(p)) return false;
+      const lat = parseFloat(p[0]);
+      const lng = parseFloat(p[1]);
+      
+      // Ensure both elements are valid numeric sequences and not NaN
+      return !isNaN(lat) && !isNaN(lng);
+    });
 
-    const heat = L.heatLayer(heatPoints, {
+    // Initialize the leaflet heat layer using exclusively clean, validated point data arrays
+    const heatLayer = L.heatLayer(validPoints, {
       radius: 25,
       blur: 15,
-      maxZoom: 10,
+      maxZoom: 17,
     }).addTo(map);
 
+    // Dynamic garbage collection cleanup
     return () => {
-      map.removeLayer(heat);
+      if (map && heatLayer) {
+        map.removeLayer(heatLayer);
+      }
     };
   }, [map, points]);
 
   return null;
-};
-
-export default HeatmapLayer;
+}

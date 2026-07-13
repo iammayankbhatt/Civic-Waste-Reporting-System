@@ -167,13 +167,23 @@ export default function AdminDashboard() {
       <div className="bg-white p-4 rounded-xl shadow border mb-6">
         <h3 className="font-bold text-lg text-slate-800 mb-3">📍 High Density Waste Incidents Heatmap</h3>
         <div className="h-96 w-full rounded-lg overflow-hidden border">
-          <MapContainer center={[28.6139, 77.2090]} zoom={5} className="h-full w-full">
+          <MapContainer center={[30.3165, 78.0322]} zoom={12} className="h-full w-full">
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <HeatmapLayer points={Array.isArray(reports) ? reports.map(r => [parseFloat(r.latitude) || 0, parseFloat(r.longitude) || 0, 50]) : []} />
-            {Array.isArray(reports) && reports.map(r => (
-              <Marker key={r.id} position={[parseFloat(r.latitude) || 0, parseFloat(r.longitude) || 0]}>
-                <Popup><span className="font-bold">{r.category}</span><br />{r.description}</Popup>
-              </Marker>
+            <HeatmapLayer 
+              points={
+                Array.isArray(reports) 
+                  ? reports
+                      .filter(r => r && r.latitude && r.longitude) // Only pass items that have valid coordinates
+                      .map(r => [parseFloat(r.latitude), parseFloat(r.longitude), 50]) 
+                  : []
+              } 
+            />
+            {Array.isArray(reports) && reports
+              .filter(r => r && r.latitude && r.longitude) // Strict coordinate validation drop check
+              .map(r => (
+                <Marker key={r.id} position={[parseFloat(r.latitude), parseFloat(r.longitude)]}>
+                  <Popup><span className="font-bold">{r.category}</span><br />{r.description}</Popup>
+                </Marker>
             ))}
           </MapContainer>
         </div>
