@@ -18,11 +18,21 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data));
-    setUser(data);
-  };
+  const { data } = await api.post('/auth/login', { email, password });
+  
+  // 1. Save the raw JWT token string
+  localStorage.setItem('token', data.token);
+  
+  // 2. Extract and sanitize the nested user object profiles
+  const profileData = data.user || data; 
+  if (profileData && profileData.role) {
+    profileData.role = profileData.role.toString().trim().toLowerCase();
+  }
+  
+  // 3. Save and commit ONLY the user object, not the token payload envelope
+  localStorage.setItem('user', JSON.stringify(profileData));
+  setUser(profileData);
+};
 
   const logout = () => {
     localStorage.removeItem('token');
