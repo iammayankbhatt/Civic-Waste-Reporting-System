@@ -11,7 +11,7 @@ exports.askSummarizer = async (req, res, next) => {
     // Case 1: Simple single report text summarization request
     if (textToSummarize) {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-002',
+        model: 'gemini-3.5-flash',
         contents: `Summarize this civic complaint concisely in one or two short sentences, highlighting the main issue and location if mentioned: "${textToSummarize}"`,
       });
       return res.json({ answer: response.text.trim() });
@@ -69,7 +69,7 @@ Admin Query: "${query}"
 `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-002',
+      model: 'gemini-3.5-flash',
       contents: systemPrompt,
     });
 
